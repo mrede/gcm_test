@@ -36,7 +36,8 @@ class Device
   def sendIos(msg)
     devices = Device.all(:type => 'ios')
 
-    APNS.pem  = '/Users/ben/sites/Label/gcm_sinatra/development.pem'
+    #APNS.pem  = '/Users/ben/sites/Label/gcm_sinatra/development.pem'
+    APNS.pem  = '/home/passenger/gcm_test/development.pem'
 
     notifications = Array.new
 
