@@ -28,7 +28,19 @@ configure :development do
 	DataMapper.auto_upgrade!
 
 end
+configure :stage do
+  enable :logging, :dump_errors, :raise_errors
 
+  DataMapper::Logger.new($stdout, :debug)
+
+  DataMapper.setup(:default, 'mysql://guff:guff@localhost/gcm_guff')
+
+  require_relative 'dave.rb'
+
+        DataMapper.finalize
+
+        DataMapper.auto_upgrade!
+end
 configure :production do
   DataMapper.setup :default, ENV['DATABASE_URL']
   set :protection, :except => :json_csrf

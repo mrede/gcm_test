@@ -21,7 +21,6 @@ class Device
 
   def sendAndroid(msg)
     
-    return
     gcm = GCM.new("AIzaSyCzpzGd9mwfJWfQMTBJYLC62Lyz9oMrwX4")
   
 
