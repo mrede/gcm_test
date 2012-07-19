@@ -31,6 +31,8 @@ class Device
     
     options = {data: {message: "#{msg}"}, message: "#{msg}"}
     response = gcm.send_notification(tokens, options)
+
+    puts "GCM Response #{response}"
   end
 
   def sendIos(msg)
