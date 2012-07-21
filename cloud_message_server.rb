@@ -145,7 +145,7 @@ post '/android/register' do
 
 	
 
-	registerResponse
+	registerResponse(@device)
 	
 end
 
