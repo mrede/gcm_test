@@ -117,7 +117,7 @@ def registerResponse (device)
 	    { :res => '1', :id => device.id }.to_json
 	else
 		dev = Device.first(:uid => "#{params[:deviceuid]}")
-		if (!dev.id.nil?) 
+		if (!dev.nil?) 
 			puts "Device exists"
 			content_type :json
 	    	{ :res => '2', :id => dev.id }.to_json
