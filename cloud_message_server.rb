@@ -60,25 +60,7 @@ get '/sendMessage' do
 
 end
 
-get '/httpclient' do
 
-
-	
-	clnt = HTTPClient.new()
-	clnt.set_cookie_store("cookie.dat")
-	uri ="https://msg.guff.me.uk/android/unregister"
-
-	puts
-	puts '= GET content directly'
-
-	body = { 'keyword' => 'ruby', 'lang' => 'en' }
-	res = clnt.post(uri, body)
-	puts res
-
-
-
-
-end
 
 get '/ios/register' do
 
