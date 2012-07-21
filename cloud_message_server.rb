@@ -10,6 +10,8 @@ require 'json'
 
 
 
+
+
 configure :development do
 	puts "DEV"
   	enable :logging, :dump_errors, :raise_errors
@@ -103,24 +105,24 @@ get '/ios/register' do
 	)
 	#validate
 	
-    registerResponse
+    registerResponse(@device)
 
 
 end
 
-def registerResponse 
+def registerResponse (device)
 
-    if @device.save
+    if device.save
     	content_type :json
-	    { :res => '1', :id => @device.id }.to_json
+	    { :res => '1', :id => device.id }.to_json
 	else
 		dev = Device.first(:uid => "#{params[:deviceuid]}")
 		if (!dev.id.nil?) 
 			puts "Device exists"
 			content_type :json
-	    	{ :res => '2', :id => @device.id }.to_json
+	    	{ :res => '2', :id => dev.id }.to_json
 		else
-			puts "Failed to save: #{@device.errors.inspect}"
+			puts "Failed to save: #{device.errors.inspect}"
 			content_type :json
 	    	{ :res => '0' }.to_json
 		end
