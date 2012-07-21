@@ -1,40 +1,56 @@
 require 'httpclient'
 require 'json'
+require 'securerandom'
 
 
 class CloudMessageClient
 
-	server = "https://msg.guff.me.uk"
+	include DataMapper::Resource
+
+	property :id, Serial
+  	property :server_id, Integer
+  	property :uid, String, :length => 20..500 #Unique ID to be stored on local client
+
+	SERVER = "https://msg.guff.me.uk"
 
 	def self.registerDevice(params)
 		#ios or android
-		if (params.has_key("devicemodel"))
+		puts " Parmas #{params}"
+		if (params.has_key?("devicemodel"))
 
 		else
 
 			clnt = HTTPClient.new()
 			clnt.set_cookie_store("cookie.dat")
-			uri ="#{server}/android/unregister"
-
-			puts
-			puts '= GET content directly'
+			puts "seinding to: #{SERVER}/android/register"
+			uri ="#{SERVER}/android/register"
 
 			
 			res = clnt.post(uri, params)
-			puts "Result of Post to android register #{res}"
+			puts "Result of Post to android register #{res.content}"
 
 			# Parse ID
-			jRes = JSON.parse(res)
+			jRes = JSON.parse(res.content)
 
-			case jRes.res
+			case jRes['res']
 			when 0
 				puts "Failed"
 			when 1 
-				puts "Success!. ID of result: #{jRes.id}"
+				puts "Success!. ID of result: #{jRes['id']}"
 			when 2
-				puts "Exists already. ID of result: #{jRes.id}"
-			
+				puts "Exists already. ID of result: #{jRes['id']}"
+			end
 
+			if (jRes['res'].to_i > 0)
+				jRes['id']
+				@localDevice = CloudMessageClient.create(
+					server_id: jRes['id'],
+					uid: SecureRandom.uuid
+				)
+				@localDevice
+			else
+				-1
+			end
 		end
 	end
 end
