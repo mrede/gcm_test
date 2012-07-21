@@ -12,18 +12,18 @@ require 'json'
 
 configure :development do
 	puts "DEV"
-  enable :logging, :dump_errors, :raise_errors
+  	enable :logging, :dump_errors, :raise_errors
 
-  DataMapper::Logger.new($stdout, :debug)
+	DataMapper::Logger.new($stdout, :debug)
 
 
-  # A MySQL connection:
-  DataMapper.setup(:default, 'mysql://root@localhost/guff')
+	# A MySQL connection:
+	DataMapper.setup(:default, 'mysql://root@localhost/guff')
 
-  require_relative 'dave.rb'
+	require_relative 'dave.rb'
 
-  	DataMapper.finalize
-	
+	DataMapper.finalize
+
 	DataMapper.auto_upgrade!
 
 end
@@ -103,12 +103,12 @@ get '/ios/register' do
 	)
 	#validate
 	
-    
+    registerResponse
 
 
 end
 
-def registerResponse
+def registerResponse 
 
     if @device.save
     	content_type :json
@@ -141,21 +141,7 @@ post '/android/register' do
 		:token 		=> params[:regId]
 	)
 
-	if @device.save
-    	content_type :json
-	    { :res => '1', :id => @device.id }.to_json
-	else
-		dev = Device.first(:uid => "#{params[:deviceuid]}")
-		if (!dev.id.nil?) 
-			puts "Device exists"
-			content_type :json
-	    	{ :res => '2', :id => @device.id }.to_json
-		else
-			puts "Failed to save: #{@device.errors.inspect}"
-			content_type :json
-	    	{ :res => '0' }.to_json
-		end
-	    
+	
 
 	registerResponse
 	
