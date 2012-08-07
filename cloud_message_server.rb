@@ -5,6 +5,7 @@ require "sinatra/reloader" if development?
 require 'gcm'
 require 'apns'
 require 'data_mapper'
+require 'uuid'
 
 require 'json'
 
@@ -94,16 +95,18 @@ end
 
 def registerResponse (device)
 
-    if device.save
-    	content_type :json
-	    { :res => '1', :id => device.id }.to_json
-	else
-		dev = Device.first(:uid => "#{params[:deviceuid]}")
-		if (!dev.nil?) 
+	#Check for device
+	dev = Device.first(:uid => "#{params[:regId]}")
+
+	if (!dev.nil?) 
 			puts "Device exists"
 			content_type :json
-	    	{ :res => '2', :id => dev.id }.to_json
+	    	{ :res => '2', :id => dev.token }.to_json
 		else
+	    if device.save
+	    	content_type :json
+		    { :res => '1', :id => device.token }.to_json
+		else		
 			puts "Failed to save: #{device.errors.inspect}"
 			content_type :json
 	    	{ :res => '0' }.to_json
@@ -122,7 +125,7 @@ post '/android/register' do
 	@device = Device.new(
 		:type 		=> 'android',
 		:uid 		=> params[:regId],
-		:token 		=> params[:regId]
+		:token 		=> UUID.new.generate
 	)
 
 	
