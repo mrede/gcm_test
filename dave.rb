@@ -21,7 +21,8 @@ class Device
 
   def sendAndroid(msg)
     
-    gcm = GCM.new("AIzaSyCzpzGd9mwfJWfQMTBJYLC62Lyz9oMrwX4")
+    gcm = GCM.new("AIzaSyApi3xdQz1b7r7E8k3fiUkUe9J22iEUUM0")
+#   gcm = GCM.new("AIzaSyCzpzGd9mwfJWfQMTBJYLC62Lyz9oMrwX4")
   
 
     devices = Device.all(:type => 'android', :fields => [:uid])
