@@ -56,6 +56,7 @@ get '/sendMessage' do
 	@d = Device.new
 	@d.pushMessage("#{params[:msg]}")
 
+	Puts "sending #{params[:msg]} to this many people #{params[:users].length}"
 	"Done"
 
 
