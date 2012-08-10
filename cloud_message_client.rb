@@ -49,8 +49,22 @@ class CloudMessageClient
 				)
 				@localDevice
 			else
-				-1
+				nil
 			end
 		end
+	end
+
+	def self.sendMessage(users, msg)
+		clnt = HTTPClient.new()
+		clnt.set_cookie_store("cookie.dat")
+		puts "sending to: #{SERVER}/android/sendMessage"
+		uri ="#{SERVER}/android/sendMessage"
+		params = {
+			:msg => msg,
+			:users => users
+		}
+
+		res = clnt.post(uri, params)
+		puts "Result of Post to android register #{res.content}"
 	end
 end
