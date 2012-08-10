@@ -150,14 +150,19 @@ def sendAndroid(msg, tokens)
     gcm = GCM.new("AIzaSyApi3xdQz1b7r7E8k3fiUkUe9J22iEUUM0")
 #   gcm = GCM.new("AIzaSyCzpzGd9mwfJWfQMTBJYLC62Lyz9oMrwX4")
   
+  	#query devices and get tokens - makes sure we are still registered
     devices = Device.all(:type => 'android', :fields => [:uid], :token => @tokens)
     tokens = devices.collect{|d| d.uid}
     
     
     options = {data: {message: "#{msg}"}, message: "#{msg}"}
-    response = gcm.send_notification(tokens, options)
+    if tokens.length > 0
+	    response = gcm.send_notification(tokens, options)
 
-    puts "GCM Response #{response}"
+    	puts "GCM Response #{response}"
+    else
+    	puts "No tokens found"
+    end
   end
 
   def sendIos(msg, tokens)
