@@ -53,11 +53,13 @@ end
 
 get '/sendMessage' do
 
-	@d = Device.new
-	@d.pushMessage("#{params[:msg]}")
+	
 
 	@tokens = params[:users].split(",")
 	puts "sending #{params[:msg]} to this many people #{@tokens.length}"
+
+	pushMessage("#{params[:msg]}", @tokens)
+
 	"Done"
 
 
@@ -142,4 +144,41 @@ post '/android/unregister' do
 		@dev.destroy
 	end
 end
+
+def sendAndroid(msg, tokens)
+    
+    gcm = GCM.new("AIzaSyApi3xdQz1b7r7E8k3fiUkUe9J22iEUUM0")
+#   gcm = GCM.new("AIzaSyCzpzGd9mwfJWfQMTBJYLC62Lyz9oMrwX4")
+  
+    devices = Device.all(:type => 'android', :fields => [:uid], :token => @tokens)
+    tokens = devices.collect{|d| d.uid}
+    
+    
+    options = {data: {message: "#{msg}"}, message: "#{msg}"}
+    response = gcm.send_notification(tokens, options)
+
+    puts "GCM Response #{response}"
+  end
+
+  def sendIos(msg, tokens)
+    devices = Device.all(:type => 'ios')
+
+    #APNS.pem  = '/Users/ben/sites/Label/gcm_sinatra/development.pem'
+    APNS.pem  = '/home/passenger/gcm_test/development.pem'
+
+    notifications = Array.new
+
+    devices.each do |d|
+      notifications.push(APNS::Notification.new(d.token, :alert => "#{msg}", :badge => 1, :sound => 'default'))
+    end
+
+    #APNS.send_notification(device_token, 'Hello iPhone!' )
+    APNS.send_notifications(notifications)
+  end
+
+  def pushMessage(msg, tokens)
+    sendIos(msg, tokens)
+    sendAndroid(msg, tokens)
+    
+  end
 
