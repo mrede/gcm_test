@@ -57,7 +57,7 @@ get '/sendMessage' do
 	@d.pushMessage("#{params[:msg]}")
 
 	@tokens = params[:users].split(",")
-	uuts "sending #{params[:msg]} to this many people #{@tokens.length}"
+	puts "sending #{params[:msg]} to this many people #{@tokens.length}"
 	"Done"
 
 
