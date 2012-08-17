@@ -169,7 +169,7 @@ def sendAndroid(msg, tokens)
     devices = Device.all(:type => 'ios')
 
     #APNS.pem  = '/Users/ben/sites/Label/gcm_sinatra/development.pem'
-    APNS.pem  = '/home/passenger/cloud_message_server/development.pem'
+    APNS.pem  = '/home/passenger/cloud_message_server/ios_combined.pem'
 
     notifications = Array.new
 
