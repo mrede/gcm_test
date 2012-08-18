@@ -92,15 +92,15 @@ get '/ios/register' do
 	)
 	#validate
 	
-    registerResponse(@device)
+    registerResponse(@device, "deviceuid")
 
 
 end
 
-def registerResponse (device)
+def registerResponse (device, uidField)
 
 	#Check for device
-	dev = Device.first(:uid => "#{params[:regId]}")
+	dev = Device.first(:uid => "#{uidField}")
 
 	if (!dev.nil?) 
 			puts "Device exists"
@@ -134,7 +134,7 @@ post '/android/register' do
 
 	
 
-	registerResponse(@device)
+	registerResponse(@device, "regId")
 	
 end
 
