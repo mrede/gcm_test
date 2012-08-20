@@ -166,7 +166,7 @@ def sendAndroid(msg, tokens)
   end
 
   def sendIos(msg, tokens)
-    devices = Device.all(:type => 'ios')
+    devices = Device.all(:type => 'ios', :token => @tokens)
 
     #APNS.pem  = '/Users/ben/sites/Label/gcm_sinatra/development.pem'
     APNS.pem  = '/home/passenger/cloud_message_server/ios_combined.pem'
