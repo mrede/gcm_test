@@ -100,7 +100,8 @@ end
 def registerResponse (device, uidField)
 
 	#Check for device
-	dev = Device.first(:uid => "#{uidField}")
+	dev = Device.first(:uid => "#{params[uidField]}")
+	puts "checking UDI #{params[uidField]}"
 
 	if (!dev.nil?) 
 			puts "Device exists"
